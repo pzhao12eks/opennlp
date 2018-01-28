@@ -17,14 +17,13 @@
 
 package opennlp.tools.util;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Class for storing start and end integer offsets.
  *
  */
-public class Span implements Comparable<Span>, Serializable {
+public class Span implements Comparable<Span> {
 
   private final int start;
   private final int end;
@@ -39,17 +38,24 @@ public class Span implements Comparable<Span>, Serializable {
    * @param type the type of the span
    */
   public Span(int s, int e, String type) {
-    this(s, e, type, 0d);
+
+    if (s < 0) {
+      throw new IllegalArgumentException("start index must be zero or greater: " + s);
+    }
+    if (e < 0) {
+      throw new IllegalArgumentException("end index must be zero or greater: " + e);
+    }
+    if (s > e) {
+      throw new IllegalArgumentException("start index must not be larger than end index: "
+              + "start=" + s + ", end=" + e);
+    }
+
+    start = s;
+    end = e;
+    this.type = type;
+    this.prob = 0d;
   }
 
-  /**
-   * Initializes a new Span Object.
-   *
-   * @param s start of span.
-   * @param e end of span, which is +1 more than the last element in the span.
-   * @param type the type of the span
-   * @param prob probability of span.
-   */
   public Span(int s, int e, String type, double prob) {
 
     if (s < 0) {

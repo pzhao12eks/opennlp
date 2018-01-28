@@ -21,7 +21,6 @@ import java.util.Map;
 
 import opennlp.tools.util.InvalidFormatException;
 
-@Deprecated   // TODO: (OPENNLP-1174) remove back-compat support when it is unnecessary
 public abstract class CustomFeatureGenerator implements AdaptiveFeatureGenerator {
 
   /**

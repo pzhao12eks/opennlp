@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import opennlp.tools.ngram.NGramGenerator;
+import opennlp.tools.util.StringList;
 
 /**
  * Tests for {@link opennlp.tools.languagemodel.NGramLanguageModel}
@@ -33,19 +34,19 @@ import opennlp.tools.ngram.NGramGenerator;
 public class NgramLanguageModelTest {
 
   @Test
-  public void testEmptyVocabularyProbability() {
+  public void testEmptyVocabularyProbability() throws Exception {
     NGramLanguageModel model = new NGramLanguageModel();
     Assert.assertEquals("probability with an empty vocabulary is always 0",
-        0d, model.calculateProbability(""), 0d);
+        0d, model.calculateProbability(new StringList("")), 0d);
     Assert.assertEquals("probability with an empty vocabulary is always 0",
-        0d, model.calculateProbability("1", "2", "3"), 0d);
+        0d, model.calculateProbability(new StringList("1", "2", "3")), 0d);
   }
 
   @Test
-  public void testRandomVocabularyAndSentence() {
+  public void testRandomVocabularyAndSentence() throws Exception {
     NGramLanguageModel model = new NGramLanguageModel();
-    for (String[] sentence : LanguageModelTestUtils.generateRandomVocabulary(10)) {
-      model.add(sentence);
+    for (StringList sentence : LanguageModelTestUtils.generateRandomVocabulary(10)) {
+      model.add(sentence, 1, 3);
     }
     double probability = model.calculateProbability(LanguageModelTestUtils.generateRandomSentence());
     Assert.assertTrue("a probability measure should be between 0 and 1 [was "
@@ -53,82 +54,82 @@ public class NgramLanguageModelTest {
   }
 
   @Test
-  public void testNgramModel() {
+  public void testNgramModel() throws Exception {
     NGramLanguageModel model = new NGramLanguageModel(4);
-    model.add("I", "saw", "the", "fox");
-    model.add("the", "red", "house");
-    model.add("I", "saw", "something", "nice");
-    double probability = model.calculateProbability("I", "saw", "the", "red", "house");
+    model.add(new StringList("I", "saw", "the", "fox"), 1, 4);
+    model.add(new StringList("the", "red", "house"), 1, 4);
+    model.add(new StringList("I", "saw", "something", "nice"), 1, 2);
+    double probability = model.calculateProbability(new StringList("I", "saw", "the", "red", "house"));
     Assert.assertTrue("a probability measure should be between 0 and 1 [was "
         + probability + "]", probability >= 0 && probability <= 1);
 
-    String[] tokens = model.predictNextTokens("I", "saw");
+    StringList tokens = model.predictNextTokens(new StringList("I", "saw"));
     Assert.assertNotNull(tokens);
-    Assert.assertArrayEquals(new String[] {"the", "fox"}, tokens);
+    Assert.assertEquals(new StringList("the", "fox"), tokens);
   }
 
   @Test
-  public void testBigramProbability() {
+  public void testBigramProbabilityNoSmoothing() throws Exception {
     NGramLanguageModel model = new NGramLanguageModel(2);
-    model.add("<s>", "I", "am", "Sam", "</s>");
-    model.add("<s>", "Sam", "I", "am", "</s>");
-    model.add("<s>", "I", "do", "not", "like", "green", "eggs", "and", "ham", "</s>");
-    double probability = model.calculateProbability("<s>", "I");
+    model.add(new StringList("<s>", "I", "am", "Sam", "</s>"), 1, 2);
+    model.add(new StringList("<s>", "Sam", "I", "am", "</s>"), 1, 2);
+    model.add(new StringList("<s>", "I", "do", "not", "like", "green", "eggs", "and", "ham", "</s>"), 1, 2);
+    double probability = model.calculateProbability(new StringList("<s>", "I"));
     Assert.assertEquals(0.666d, probability, 0.001);
-    probability = model.calculateProbability("Sam", "</s>");
+    probability = model.calculateProbability(new StringList("Sam", "</s>"));
     Assert.assertEquals(0.5d, probability, 0.001);
-    probability = model.calculateProbability("<s>", "Sam");
+    probability = model.calculateProbability(new StringList("<s>", "Sam"));
     Assert.assertEquals(0.333d, probability, 0.001);
-    probability = model.calculateProbability("am", "Sam");
+    probability = model.calculateProbability(new StringList("am", "Sam"));
     Assert.assertEquals(0.5d, probability, 0.001);
-    probability = model.calculateProbability("I", "am");
+    probability = model.calculateProbability(new StringList("I", "am"));
     Assert.assertEquals(0.666d, probability, 0.001);
-    probability = model.calculateProbability("I", "do");
+    probability = model.calculateProbability(new StringList("I", "do"));
     Assert.assertEquals(0.333d, probability, 0.001);
-    probability = model.calculateProbability("I", "am", "Sam");
+    probability = model.calculateProbability(new StringList("I", "am", "Sam"));
     Assert.assertEquals(0.333d, probability, 0.001);
   }
 
   @Test
-  public void testTrigram() {
+  public void testTrigram() throws Exception {
     NGramLanguageModel model = new NGramLanguageModel(3);
-    model.add("I", "see", "the", "fox");
-    model.add("the", "red", "house");
-    model.add("I", "saw", "something", "nice");
-    double probability = model.calculateProbability("I", "saw", "the", "red", "house");
+    model.add(new StringList("I", "see", "the", "fox"), 1, 3);
+    model.add(new StringList("the", "red", "house"), 1, 3);
+    model.add(new StringList("I", "saw", "something", "nice"), 1, 3);
+    double probability = model.calculateProbability(new StringList("I", "saw", "the", "red", "house"));
     Assert.assertTrue("a probability measure should be between 0 and 1 [was "
         + probability + "]", probability >= 0 && probability <= 1);
 
-    String[] tokens = model.predictNextTokens("I", "saw");
+    StringList tokens = model.predictNextTokens(new StringList("I", "saw"));
     Assert.assertNotNull(tokens);
-    Assert.assertArrayEquals(new String[] {"something"}, tokens);
+    Assert.assertEquals(new StringList("something"), tokens);
   }
 
   @Test
-  public void testBigram() {
+  public void testBigram() throws Exception {
     NGramLanguageModel model = new NGramLanguageModel(2);
-    model.add("I", "see", "the", "fox");
-    model.add("the", "red", "house");
-    model.add("I", "saw", "something", "nice");
-    double probability = model.calculateProbability("I", "saw", "the", "red", "house");
+    model.add(new StringList("I", "see", "the", "fox"), 1, 2);
+    model.add(new StringList("the", "red", "house"), 1, 2);
+    model.add(new StringList("I", "saw", "something", "nice"), 1, 2);
+    double probability = model.calculateProbability(new StringList("I", "saw", "the", "red", "house"));
     Assert.assertTrue("a probability measure should be between 0 and 1 [was " + probability + "]",
         probability >= 0 && probability <= 1);
 
-    String[] tokens = model.predictNextTokens("I", "saw");
+    StringList tokens = model.predictNextTokens(new StringList("I", "saw"));
     Assert.assertNotNull(tokens);
-    Assert.assertArrayEquals(new String[] {"something"}, tokens);
+    Assert.assertEquals(new StringList("something"), tokens);
   }
 
   @Test
   public void testSerializedNGramLanguageModel() throws Exception {
     NGramLanguageModel languageModel = new NGramLanguageModel(getClass().getResourceAsStream(
         "/opennlp/tools/ngram/ngram-model.xml"), 3);
-    double probability = languageModel.calculateProbability("The", "brown", "fox", "jumped");
+    double probability = languageModel.calculateProbability(new StringList("The", "brown", "fox", "jumped"));
     Assert.assertTrue("a probability measure should be between 0 and 1 [was " + probability + "]",
         probability >= 0 && probability <= 1);
-    String[] tokens = languageModel.predictNextTokens("the", "brown", "fox");
+    StringList tokens = languageModel.predictNextTokens(new StringList("the","brown","fox"));
     Assert.assertNotNull(tokens);
-    Assert.assertArrayEquals(new String[] {"jumped"}, tokens);
+    Assert.assertEquals(new StringList("jumped"), tokens);
   }
 
   @Test
@@ -143,18 +144,18 @@ public class NgramLanguageModelTest {
       for (String generatedString : generatedStrings) {
         String[] tokens = generatedString.split(" ");
         if (tokens.length > 0) {
-          languageModel.add(tokens);
+          languageModel.add(new StringList(tokens), 1, ngramSize);
         }
       }
     }
-    String[] tokens = languageModel.predictNextTokens("neural",
-        "network", "language");
+    StringList tokens = languageModel.predictNextTokens(new StringList("neural",
+        "network", "language"));
     Assert.assertNotNull(tokens);
-    Assert.assertArrayEquals(new String[] {"models"}, tokens);
-    double p1 = languageModel.calculateProbability("neural", "network",
-        "language", "models");
-    double p2 = languageModel.calculateProbability("neural", "network",
-        "language", "model");
+    Assert.assertEquals(new StringList("models"), tokens);
+    double p1 = languageModel.calculateProbability(new StringList("neural", "network",
+        "language", "models"));
+    double p2 = languageModel.calculateProbability(new StringList("neural", "network",
+        "language", "model"));
     Assert.assertTrue(p1 > p2);
   }
 }

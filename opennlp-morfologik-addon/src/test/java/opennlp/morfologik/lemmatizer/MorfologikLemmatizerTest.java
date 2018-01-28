@@ -62,7 +62,6 @@ public class MorfologikLemmatizerTest {
   private MorfologikLemmatizer createDictionary(boolean caseSensitive)
       throws Exception {
     Path output = POSDictionayBuilderTest.createMorfologikDictionary();
-    output.toFile().deleteOnExit();
     return new MorfologikLemmatizer(output);
   }
 

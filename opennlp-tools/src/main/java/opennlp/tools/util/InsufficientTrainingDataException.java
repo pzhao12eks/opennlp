@@ -24,8 +24,9 @@ import java.io.IOException;
  * This exception indicates that the provided training data is
  * insufficient to train the desired model.
  */
-@SuppressWarnings("serial")
 public class InsufficientTrainingDataException extends IOException {
+
+  private static final long serialVersionUID = 0;
 
   public InsufficientTrainingDataException() {
   }

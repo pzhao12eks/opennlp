@@ -17,13 +17,12 @@
 
 package opennlp.tools.langdetect;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Class which holds a classified document and its @{@link Language}.
  */
-public class LanguageSample implements Serializable {
+public class LanguageSample {
 
   private final Language language;
   private final CharSequence context;

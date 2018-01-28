@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import opennlp.tools.util.ObjectStream;
@@ -45,25 +44,10 @@ public class BratDocument {
     this.text = text;
 
     Map<String, BratAnnotation> annMap = new HashMap<>();
-    List<AnnotatorNoteAnnotation> noteList = new ArrayList<>();
     for (BratAnnotation annotation : annotations) {
-      if (annotation instanceof AnnotatorNoteAnnotation) {
-        noteList.add((AnnotatorNoteAnnotation)annotation);
-      } else {
-        annMap.put(annotation.getId(), annotation);
-      }
+      annMap.put(annotation.getId(), annotation);
     }
 
-    // attach AnnotatorNote to the appropriate Annotation.
-    // the note should ALWAYS have an appropriate id in the map,
-    // but just to be safe, check for null.
-    for (AnnotatorNoteAnnotation note: noteList) {
-      BratAnnotation annotation = annMap.get(note.getAttachedId());
-      if (annotation != null) {
-        annotation.setNote(note.getNote());
-      }
-    }
-    
     annotationMap = Collections.unmodifiableMap(annMap);
   }
 

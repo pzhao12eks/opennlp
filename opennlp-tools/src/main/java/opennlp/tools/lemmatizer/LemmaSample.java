@@ -17,7 +17,6 @@
 
 package opennlp.tools.lemmatizer;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +26,7 @@ import java.util.Objects;
 /**
  * Represents an lemmatized sentence.
  */
-public class LemmaSample implements Serializable {
+public class LemmaSample {
 
   private List<String> tokens;
 

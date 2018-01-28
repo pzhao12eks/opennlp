@@ -21,7 +21,6 @@ import java.util.Map;
 
 import opennlp.tools.util.model.ArtifactSerializer;
 
-@Deprecated   // TODO: (OPENNLP-1174) remove back-compat support when it is unnecessary
 public interface ArtifactToSerializerMapper {
   Map<String, ArtifactSerializer<?>> getArtifactSerializerMapping();
 }

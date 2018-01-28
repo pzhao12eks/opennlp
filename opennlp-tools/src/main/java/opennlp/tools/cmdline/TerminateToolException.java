@@ -30,8 +30,9 @@ package opennlp.tools.cmdline;
  * <p>
  * <b>Note:</b> Do not use this class, internal use only!
  */
-@SuppressWarnings("serial")
 public class TerminateToolException extends RuntimeException {
+
+  private static final long serialVersionUID = 1L;
 
   private final int code;
   private final String message;

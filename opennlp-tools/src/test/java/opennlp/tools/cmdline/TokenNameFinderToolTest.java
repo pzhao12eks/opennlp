@@ -64,8 +64,7 @@ public class TokenNameFinderToolTest {
     
     final String content = new String(baos.toByteArray(), StandardCharsets.UTF_8);
     Assert.assertTrue(content.contains("It is <START:person> Stefanie Schmidt. <END>"));
-
-    model1.delete();
+    
   }
   
   @Test(expected = TerminateToolException.class)

@@ -17,7 +17,6 @@
 
 package opennlp.morfologik.tagdict;
 
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -83,9 +82,7 @@ public class MorfologikTagDictionaryTest {
 
   private MorfologikTagDictionary createDictionary(boolean caseSensitive,
       List<String> constant) throws Exception {
-    Path output = POSDictionayBuilderTest.createMorfologikDictionary();
-    output.toFile().deleteOnExit();
-    Dictionary dic = Dictionary.read(output);
+    Dictionary dic = Dictionary.read(POSDictionayBuilderTest.createMorfologikDictionary());
     return new MorfologikTagDictionary(dic, caseSensitive);
   }
 

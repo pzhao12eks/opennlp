@@ -17,13 +17,12 @@
 
 package opennlp.tools.langdetect;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Class for holding the document language and its confidence
  */
-public class Language implements Serializable {
+public class Language {
   private final String lang;
   private final double confidence;
 
@@ -47,7 +46,9 @@ public class Language implements Serializable {
 
   @Override
   public String toString() {
-    return getLang() + " (" + this.confidence + ")";
+    StringBuilder sb = new StringBuilder();
+    sb.append(getLang()).append(" (").append(this.confidence).append(")");
+    return sb.toString();
   }
 
   @Override

@@ -41,6 +41,8 @@ package opennlp.tools.stemmer.snowball;
 
 public class irishStemmer extends opennlp.tools.stemmer.snowball.AbstractSnowballStemmer {
 
+private static final long serialVersionUID = 1L;
+
         private final static irishStemmer methodObject = new irishStemmer ();
 
                 private final static Among a_0[] = {

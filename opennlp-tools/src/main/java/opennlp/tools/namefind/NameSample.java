@@ -18,7 +18,6 @@
 package opennlp.tools.namefind;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,7 +32,7 @@ import opennlp.tools.util.Span;
 /**
  * Class for holding names for a single unit of text.
  */
-public class NameSample implements Serializable {
+public class NameSample {
 
   private final String id;
   private final List<String> sentence;
@@ -72,15 +71,7 @@ public class NameSample implements Serializable {
     }
     isClearAdaptiveData = clearAdaptiveData;
 
-    // Check that name spans are not overlapping, otherwise throw exception
-    if (this.names.size() > 1) {
-      for (int i = 1; i < this.names.size(); i++) {
-        if (this.names.get(i).getStart() < this.names.get(i - 1).getEnd()) {
-          throw new RuntimeException(String.format("name spans %s and %s are overlapped in file: %s",
-              this.names.get(i - 1), this.names.get(i), id));
-        }
-      }
-    }
+    // TODO: Check that name spans are not overlapping, otherwise throw exception
   }
 
   /**

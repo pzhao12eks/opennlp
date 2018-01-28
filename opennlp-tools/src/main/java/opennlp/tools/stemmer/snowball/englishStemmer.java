@@ -40,6 +40,8 @@ package opennlp.tools.stemmer.snowball;
  */
 class englishStemmer extends opennlp.tools.stemmer.snowball.AbstractSnowballStemmer {
 
+private static final long serialVersionUID = 1L;
+
         private final static englishStemmer methodObject = new englishStemmer ();
 
                 private final static Among a_0[] = {

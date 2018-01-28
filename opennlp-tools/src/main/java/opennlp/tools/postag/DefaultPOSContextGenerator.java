@@ -43,6 +43,7 @@ public class DefaultPOSContextGenerator implements POSContextGenerator {
   private Object wordsKey;
 
   private Dictionary dict;
+  private String[] dictGram;
 
   /**
    * Initializes the current instance.
@@ -61,7 +62,7 @@ public class DefaultPOSContextGenerator implements POSContextGenerator {
    */
   public DefaultPOSContextGenerator(int cacheSize, Dictionary dict) {
     this.dict = dict;
-
+    dictGram = new String[1];
     if (cacheSize > 0) {
       contextsCache = new Cache<>(cacheSize);
     }
@@ -147,8 +148,8 @@ public class DefaultPOSContextGenerator implements POSContextGenerator {
     e.add("default");
     // add the word itself
     e.add("w=" + lex);
-
-    if (dict == null || !dict.contains(new StringList(lex))) {
+    dictGram[0] = lex;
+    if (dict == null || !dict.contains(new StringList(dictGram))) {
       // do some basic suffix analysis
       String[] suffs = getSuffixes(lex);
       for (int i = 0; i < suffs.length; i++) {

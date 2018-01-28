@@ -30,12 +30,12 @@ import opennlp.tools.formats.ConllXTokenSampleStreamFactory;
 import opennlp.tools.formats.DocumentSampleStreamFactory;
 import opennlp.tools.formats.EvalitaNameSampleStreamFactory;
 import opennlp.tools.formats.LanguageDetectorSampleStreamFactory;
+import opennlp.tools.formats.LeipzigDocumentSampleStreamFactory;
 import opennlp.tools.formats.LemmatizerSampleStreamFactory;
 import opennlp.tools.formats.NameSampleDataStreamFactory;
 import opennlp.tools.formats.ParseSampleStreamFactory;
 import opennlp.tools.formats.SentenceSampleStreamFactory;
 import opennlp.tools.formats.TokenSampleStreamFactory;
-import opennlp.tools.formats.TwentyNewsgroupSampleStreamFactory;
 import opennlp.tools.formats.WordTagSampleStreamFactory;
 import opennlp.tools.formats.ad.ADChunkSampleStreamFactory;
 import opennlp.tools.formats.ad.ADNameSampleStreamFactory;
@@ -61,7 +61,6 @@ import opennlp.tools.formats.leipzig.LeipzigLanguageSampleStreamFactory;
 import opennlp.tools.formats.letsmt.LetsmtSentenceStreamFactory;
 import opennlp.tools.formats.moses.MosesSentenceSampleStreamFactory;
 import opennlp.tools.formats.muc.Muc6NameSampleStreamFactory;
-import opennlp.tools.formats.nkjp.NKJPSentenceSampleStreamFactory;
 import opennlp.tools.formats.ontonotes.OntoNotesNameSampleStreamFactory;
 import opennlp.tools.formats.ontonotes.OntoNotesPOSSampleStreamFactory;
 import opennlp.tools.formats.ontonotes.OntoNotesParseSampleStreamFactory;
@@ -105,12 +104,12 @@ public final class StreamFactoryRegistry {
     ConllXPOSSampleStreamFactory.registerFactory();
     ConllXSentenceSampleStreamFactory.registerFactory();
     ConllXTokenSampleStreamFactory.registerFactory();
+    LeipzigDocumentSampleStreamFactory.registerFactory();
     ADChunkSampleStreamFactory.registerFactory();
     ADNameSampleStreamFactory.registerFactory();
     ADSentenceSampleStreamFactory.registerFactory();
     ADPOSSampleStreamFactory.registerFactory();
     ADTokenSampleStreamFactory.registerFactory();
-    TwentyNewsgroupSampleStreamFactory.registerFactory();
 
     Muc6NameSampleStreamFactory.registerFactory();
 
@@ -129,7 +128,6 @@ public final class StreamFactoryRegistry {
     IrishSentenceBankSentenceStreamFactory.registerFactory();
     IrishSentenceBankTokenSampleStreamFactory.registerFactory();
     LeipzigLanguageSampleStreamFactory.registerFactory();
-    NKJPSentenceSampleStreamFactory.registerFactory();
   }
 
   public static final String DEFAULT_FORMAT = "opennlp";

@@ -41,6 +41,8 @@ package opennlp.tools.stemmer.snowball;
   */
 class porterStemmer extends opennlp.tools.stemmer.snowball.AbstractSnowballStemmer {
 
+private static final long serialVersionUID = 1L;
+
         private final static porterStemmer methodObject = new porterStemmer ();
 
                 private final static Among a_0[] = {

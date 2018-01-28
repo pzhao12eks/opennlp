@@ -17,13 +17,7 @@
 
 package opennlp.tools.namefind;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -67,32 +61,6 @@ public class NameSampleTest {
     return nameSample;
   }
 
-  @Test
-  public void testNameSampleSerDe() throws IOException {
-    NameSample nameSample = createGoldSample();
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    ObjectOutput out = new ObjectOutputStream(byteArrayOutputStream);
-    out.writeObject(nameSample);
-    out.flush();
-    byte[] bytes = byteArrayOutputStream.toByteArray();
-
-    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-    ObjectInput objectInput = new ObjectInputStream(byteArrayInputStream);
-
-    NameSample deSerializedNameSample = null;
-    try {
-      deSerializedNameSample = (NameSample) objectInput.readObject();
-    } catch (ClassNotFoundException e) {
-      // do nothing
-    }
-
-    Assert.assertNotNull(deSerializedNameSample);
-    Assert.assertArrayEquals(nameSample.getSentence(), deSerializedNameSample.getSentence());
-    Assert.assertArrayEquals(nameSample.getNames(), deSerializedNameSample.getNames());
-    Assert.assertArrayEquals(nameSample.getAdditionalContext(),
-        deSerializedNameSample.getAdditionalContext());
-  }
-
   /**
    * Test serialization of sequential spans.
    */
@@ -104,7 +72,8 @@ public class NameSampleTest {
     Span[] names = {new Span(0, 2, "Place"), new Span(2, 4, "Time"),
         new Span(4, 6, "Person")};
 
-    NameSample nameSample = new NameSample(sentence, names, false);
+    NameSample nameSample;
+    nameSample = new NameSample(sentence, names, false);
 
     Assert.assertEquals(
         "<START:Place> A Place <END> <START:Time> a time <END> <START:Person> A Person <END> .",
@@ -122,25 +91,12 @@ public class NameSampleTest {
     Span[] names = {new Span(0, 2, "Place"), new Span(4, 6, "Person"),
         new Span(2, 4, "Time")};
 
-    NameSample nameSample = new NameSample(sentence, names, false);
+    NameSample nameSample;
+    nameSample = new NameSample(sentence, names, false);
 
     Assert.assertEquals(
         "<START:Place> A Place <END> <START:Time> a time <END> <START:Person> A Person <END> .",
         nameSample.toString());
-  }
-
-  /**
-   * Test if it fails to name spans are overlapping
-   */
-  @Test(expected = RuntimeException.class)
-  public void testOverlappingNameSpans() throws Exception {
-
-    String[] sentence = {"A", "Place", "a", "time", "A", "Person", "."};
-
-    Span[] names = {new Span(0, 2, "Place"), new Span(3, 5, "Person"),
-        new Span(2, 4, "Time")};
-
-    new NameSample(sentence, names, false);
   }
 
   /**
@@ -269,15 +225,6 @@ public class NameSampleTest {
   @Test(expected = IOException.class)
   public void testTypeWithInvalidChar2() throws Exception {
     NameSample.parse("<START:abc>a> token <END>", false);
-  }
-
-  /**
-   * Test if it fails to parse nested names
-   * @throws Exception
-   */
-  @Test(expected = IOException.class)
-  public void testNestedNameSpans() throws Exception {
-    NameSample.parse("<START:Person> <START:Location> Kennedy <END> City <END>", false);
   }
 
   @Test

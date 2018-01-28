@@ -191,7 +191,7 @@ Mr . <START:person> Vinken <END> is chairman of Elsevier N.V. , the Dutch publis
 $ opennlp TokenNameFinderTrainer
 Usage: opennlp TokenNameFinderTrainer[.evalita|.ad|.conll03|.bionlp2004|.conll02|.muc6|.ontonotes|.brat] \
 [-featuregen featuregenFile] [-nameTypes types] [-sequenceCodec codec] [-factory factoryName] \
-[-resources resourcesDir] [-type typeOverride] [-params paramsFile] -lang language \
+[-resources resourcesDir] [-type modelType] [-params paramsFile] -lang language \
 -model modelFile -data sampleData [-encoding charsetName]
 
 Arguments description:
@@ -205,8 +205,8 @@ Arguments description:
                 A sub-class of TokenNameFinderFactory
         -resources resourcesDir
                 The resources directory
-        -type typeOverride
-                Overrides the type parameter in the provided samples
+        -type modelType
+                The type of the token name finder model
         -params paramsFile
                 training parameters file.
         -lang language
@@ -268,7 +268,7 @@ $ opennlp TokenNameFinderTrainer -featuregen brown.xml -sequenceCodec BILOU -res
 			<programlisting language="java">
 				<![CDATA[
 ObjectStream<String> lineStream =
-		new PlainTextByLineStream(new FileInputStream("en-ner-person.train"), StandardCharsets.UTF_8);
+		new PlainTextByLineStream(new FileInputStream("en-ner-person.train"), StandardCharsets.UTF8);
 
 TokenNameFinderModel model;
 
@@ -560,21 +560,21 @@ System.out.println(result.toString());]]>
 				</listitem>
 				<listitem>
 					<para>
-						<ulink  url="https://www.ldc.upenn.edu/sites/www.ldc.upenn.edu/files/english-entities-guidelines-v6.6.pdf">
+						<ulink  url="http://projects.ldc.upenn.edu/ace/docs/English-Entities-Guidelines_v5.6.1.pdf">
 							ACE
 						</ulink>
 					</para>
 				</listitem>
                 <listitem>
                     <para>
-                        <ulink  url="https://www.clips.uantwerpen.be/conll2002/ner/">
+                        <ulink  url="http://www.cnts.ua.ac.be/conll2002/ner/">
                             CONLL 2002
                         </ulink>
                     </para>
                 </listitem>
 				<listitem>
 					<para>
-						<ulink  url="https://www.clips.uantwerpen.be/conll2003/ner/">
+						<ulink  url="http://www.cnts.ua.ac.be/conll2003/ner/annotation.txt">
 							CONLL 2003
 						</ulink>
 					</para>

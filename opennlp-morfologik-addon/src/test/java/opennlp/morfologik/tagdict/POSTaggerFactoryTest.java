@@ -70,7 +70,6 @@ public class POSTaggerFactoryTest {
   public void testPOSTaggerWithCustomFactory() throws Exception {
 
     Path dictionary = POSDictionayBuilderTest.createMorfologikDictionary();
-    dictionary.toFile().deleteOnExit();
     POSTaggerFactory inFactory = new MorfologikPOSTaggerFactory();
     TagDictionary inDict = inFactory.createTagDictionary(dictionary.toFile());
     inFactory.setTagDictionary(inDict);

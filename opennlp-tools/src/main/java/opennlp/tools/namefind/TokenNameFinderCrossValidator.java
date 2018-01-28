@@ -18,7 +18,6 @@
 package opennlp.tools.namefind;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +34,7 @@ import opennlp.tools.util.eval.FMeasure;
 
 public class TokenNameFinderCrossValidator {
 
-  private static class DocumentSample implements Serializable {
+  private static class DocumentSample {
 
     private NameSample[] samples;
 

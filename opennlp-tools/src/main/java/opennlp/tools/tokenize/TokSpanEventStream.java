@@ -21,6 +21,8 @@ package opennlp.tools.tokenize;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import opennlp.tools.ml.model.Event;
@@ -35,6 +37,8 @@ import opennlp.tools.util.Span;
  * can be used by the maxent library for training.
  */
 public class TokSpanEventStream extends AbstractEventStream<TokenSample> {
+
+  private static Logger logger = Logger.getLogger(TokSpanEventStream.class.getName());
 
   private TokenContextGenerator cg;
 
@@ -134,8 +138,10 @@ public class TokSpanEventStream extends AbstractEventStream<TokenSample> {
               //keep looking
             }
             else {
-              System.out.println("Bad training token: " + tokens[ti] + " cand: " + cSpan +
-                  " token=" + text.substring(tokens[ti].getStart(), tokens[ti].getEnd()));
+              if (logger.isLoggable(Level.WARNING)) {
+                logger.warning("Bad training token: " + tokens[ti] + " cand: " + cSpan +
+                    " token=" + text.substring(tokens[ti].getStart(), tokens[ti].getEnd()));
+              }
             }
           }
 

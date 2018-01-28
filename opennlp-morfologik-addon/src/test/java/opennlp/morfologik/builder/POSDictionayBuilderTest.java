@@ -36,9 +36,7 @@ public class POSDictionayBuilderTest {
   public static Path createMorfologikDictionary() throws Exception {
     Path tabFilePath = File.createTempFile(
         POSDictionayBuilderTest.class.getName(), ".txt").toPath();
-    tabFilePath.toFile().deleteOnExit();
     Path infoFilePath = DictionaryMetadata.getExpectedMetadataLocation(tabFilePath);
-    infoFilePath.toFile().deleteOnExit();
 
     Files.copy(POSDictionayBuilderTest.class.getResourceAsStream(
         "/dictionaryWithLemma.txt"), tabFilePath, StandardCopyOption.REPLACE_EXISTING);
@@ -76,7 +74,6 @@ public class POSDictionayBuilderTest {
     Path output = createMorfologikDictionary();
     MorfologikLemmatizer ml = new MorfologikLemmatizer(output);
     Assert.assertNotNull(ml);
-    output.toFile().deleteOnExit();
   }
 
 }
